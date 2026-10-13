@@ -25,7 +25,10 @@ jobs:
 
       - name: Install SDK components (platform-30 / build-tools / NDK / CMake)
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null
+          # 新版 sdkmanager 需用 JDK 17 运行（仅此步骤）
+          export JAVA_HOME="$JAVA_HOME_17_X64"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3" "ndk;21.4.7075529" "cmake;3.18.1"
 
       - name: Grant execute permission for gradlew
